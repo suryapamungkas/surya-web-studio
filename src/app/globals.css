@@ -192,6 +192,12 @@
   transition-timing-function: var(--spring-easing);
 }
 
+/* Modern Web Guidance: defer rendering of offscreen below-the-fold sections */
+.cv-auto-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 480px;
+}
+
 /* Multi-layer GSAP ScrollTrigger + Lenis Parallax Scrolling */
 .parallax {
   width: 100%;

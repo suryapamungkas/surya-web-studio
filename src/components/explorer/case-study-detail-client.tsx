@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeftIcon,
@@ -11,13 +10,11 @@ import {
   ChevronRightIcon,
   CpuIcon,
   ExternalLinkIcon,
-  GaugeIcon,
   GithubIcon,
   LayersIcon,
   PlayIcon,
   SparklesIcon,
   TrendingUpIcon,
-  ZapIcon,
 } from "lucide-react";
 import { type PortfolioProject } from "@/lib/portfolio-data";
 import { useAgencyStore } from "@/lib/agency-store";
@@ -30,9 +27,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Slider } from "@/components/ui/slider";
 import { TechStackIcon } from "@/components/ui/tech-stack-icon";
 import { GlowCard } from "@/components/ui/spotlight-card";
+import { ProjectBlueprintVisual } from "@/components/explorer/project-blueprint-visual";
 import { ProjectCard } from "@/components/explorer/project-card";
 
 interface CaseStudyDetailClientProps {
@@ -52,17 +49,6 @@ export function CaseStudyDetailClient({
   const toggleBookmark = useAgencyStore((state) => state.toggleBookmark);
 
   const isBookmarked = bookmarkedSlugs.includes(project.slug);
-  const [simulatedRps, setSimulatedRps] = React.useState<number>(1200);
-
-  const simulatedLatencyMs = React.useMemo(() => {
-    const base = project.targetSegment === "ENTERPRISE" ? 38 : 24;
-    const loadFactor = Math.round((simulatedRps / 5000) * 19);
-    return base + loadFactor;
-  }, [project.targetSegment, simulatedRps]);
-
-  const simulatedLegacyLatencyMs = React.useMemo(() => {
-    return simulatedLatencyMs * 9 + 180;
-  }, [simulatedLatencyMs]);
 
   return (
     <article className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 flex flex-col gap-14">
@@ -174,11 +160,11 @@ export function CaseStudyDetailClient({
             <CardContent className="p-5 flex flex-col gap-4">
               <div className="flex items-center justify-between border-b border-border/70 pb-3">
                 <span className="text-xs font-medium text-muted-foreground">
-                  Skor Kecepatan Web
+                  Status Sistem
                 </span>
                 <Badge variant="verified">
-                  <GaugeIcon className="size-3 mr-1" />
-                  Lighthouse {project.metrics.lighthouseScore}/100
+                  <CheckCircle2Icon className="size-3 mr-1" />
+                  Produksi Terverifikasi
                 </Badge>
               </div>
 
@@ -207,175 +193,86 @@ export function CaseStudyDetailClient({
         </div>
       </header>
 
-      {/* Primary Visual Showcase Frame */}
-      <section aria-label="Tampilan proyek" className="relative">
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary shadow-sm">
-          {project.previewVideoUrl ? (
-            <video
-              src={project.previewVideoUrl}
-              poster={project.coverImageUrl}
-              autoPlay
-              loop
-              muted
-              playsInline
-              controls
-              className="size-full object-cover"
-            />
-          ) : (
-            <Image
-              src={project.coverImageUrl}
-              alt={`Tampilan ${project.title}`}
-              fill
-              priority
-              sizes="(max-width: 1440px) 100vw, 1440px"
-              className="object-cover"
-            />
-          )}
-        </div>
+      {/* Primary Visual Showcase Frame (Lightweight Architecture Blueprint) */}
+      <section aria-label="Blueprint arsitektur proyek" className="relative">
+        <ProjectBlueprintVisual project={project} variant="detail" />
       </section>
 
-      {/* Before vs. After Comparison + Speed Simulator */}
+      {/* Before vs. After Comparison */}
       <section
         aria-labelledby="telemetry-heading"
-        className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
+        className="flex flex-col gap-5"
       >
-        <div className="lg:col-span-7 flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <span className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
-              01 / Manfaat Nyata
-            </span>
-            <h2
-              id="telemetry-heading"
-              className="font-display text-2xl font-bold tracking-tight text-foreground"
+        <div className="flex flex-col gap-1">
+          <span className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            01 / Manfaat Nyata
+          </span>
+          <h2
+            id="telemetry-heading"
+            className="font-display text-2xl font-bold tracking-tight text-foreground"
+          >
+            Perbandingan Sebelum & Sesudah Pakai Sistem
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {project.beforeAfter.map((item, idx) => (
+            <GlowCard
+              key={item.metricLabel}
+              customSize
+              glowColor={idx % 2 === 0 ? "green" : "blue"}
+              tabIndex={0}
+              className="group relative h-[210px] bg-card transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-status-emerald"
             >
-              Perbandingan Sebelum & Sesudah Pakai Sistem
-            </h2>
-          </div>
+              <div className="relative z-10 flex h-full w-full flex-col justify-between overflow-hidden rounded-[14px]">
+                {/* Top Header: Clean Metric Label */}
+                <div className="p-5 pb-3 flex flex-col gap-1">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-status-emerald">
+                    Indikator 0{idx + 1}
+                  </span>
+                  <h3 className="font-display text-base font-bold text-foreground group-hover:text-status-emerald group-focus-within:text-status-emerald transition-colors line-clamp-1">
+                    {item.metricLabel}
+                  </h3>
+                </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
-            {project.beforeAfter.map((item, idx) => (
-              <GlowCard
-                key={item.metricLabel}
-                customSize
-                glowColor={idx % 2 === 0 ? "green" : "blue"}
-                tabIndex={0}
-                className="group relative h-[210px] bg-card transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-status-emerald"
-              >
-                <div className="relative z-10 flex h-full w-full flex-col justify-between overflow-hidden rounded-[14px]">
-                  {/* Top Header: Clean Metric Label */}
-                  <div className="p-5 pb-3 flex flex-col gap-1">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-status-emerald">
-                      Indikator 0{idx + 1}
-                    </span>
-                    <h3 className="font-display text-base font-bold text-foreground group-hover:text-status-emerald group-focus-within:text-status-emerald transition-colors line-clamp-1">
-                      {item.metricLabel}
-                    </h3>
-                  </div>
-
-                  {/* Bottom Stage: Clean Metric Number When Idle -> Smooth Explanation on Hover */}
-                  <div className="relative flex-1 w-full overflow-hidden bg-surface border-t border-border/60">
-                    {/* Idle Layer */}
-                    <div className="absolute inset-0 p-5 flex items-center justify-between transition-all duration-400 ease-out group-hover:opacity-0 group-hover:scale-105 group-focus-within:opacity-0 group-focus-within:scale-105 pointer-events-none">
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-mono text-2xl font-bold text-status-emerald tabular-nums">
-                          {item.afterValue}
-                        </span>
-                        <span className="font-mono text-xs text-muted-foreground line-through tabular-nums">
-                          Sebelumnya: {item.beforeValue}
-                        </span>
-                      </div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-status-emerald inline-flex items-center gap-0.5">
-                        <span>Detail</span>
-                        <ChevronRightIcon className="size-3.5" />
+                {/* Bottom Stage: Clean Metric Number When Idle -> Smooth Explanation on Hover */}
+                <div className="relative flex-1 w-full overflow-hidden bg-surface/65 border-t border-border/60">
+                  {/* Idle Layer */}
+                  <div className="absolute inset-0 p-5 flex items-center justify-between transition-all duration-400 ease-out group-hover:opacity-0 group-hover:scale-105 group-focus-within:opacity-0 group-focus-within:scale-105 pointer-events-none">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-mono text-2xl font-bold text-status-emerald tabular-nums">
+                        {item.afterValue}
+                      </span>
+                      <span className="font-mono text-xs text-muted-foreground line-through tabular-nums">
+                        Sebelumnya: {item.beforeValue}
                       </span>
                     </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-status-emerald inline-flex items-center gap-0.5">
+                      <span>Detail</span>
+                      <ChevronRightIcon className="size-3.5" />
+                    </span>
+                  </div>
 
-                    {/* Hover / Focus Detail Layer */}
-                    <div className="absolute inset-0 p-5 flex flex-col justify-between bg-gradient-to-b from-card via-surface to-status-emerald-subtle/35 transition-all duration-400 ease-out opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
-                      <div className="flex items-start gap-2 text-xs text-foreground/90 leading-relaxed">
-                        <TrendingUpIcon className="size-4 shrink-0 text-status-emerald mt-0.5" />
-                        <span>{item.improvementNote}</span>
-                      </div>
-                      <div className="flex items-center justify-between border-t border-border/70 pt-2 text-[11px] font-mono">
-                        <span className="text-muted-foreground">
-                          {item.beforeLabel}: {item.beforeValue}
-                        </span>
-                        <span className="font-bold text-status-emerald">
-                          {item.afterLabel}: {item.afterValue}
-                        </span>
-                      </div>
+                  {/* Hover / Focus Detail Layer */}
+                  <div className="absolute inset-0 p-5 flex flex-col justify-between bg-gradient-to-b from-card/95 via-surface/95 to-status-emerald-subtle/35 transition-all duration-400 ease-out opacity-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+                    <div className="flex items-start gap-2 text-xs text-foreground/90 leading-relaxed">
+                      <TrendingUpIcon className="size-4 shrink-0 text-status-emerald mt-0.5" />
+                      <span>{item.improvementNote}</span>
+                    </div>
+                    <div className="flex items-center justify-between border-t border-border/70 pt-2 text-[11px] font-mono">
+                      <span className="text-muted-foreground">
+                        {item.beforeLabel}: {item.beforeValue}
+                      </span>
+                      <span className="font-bold text-status-emerald">
+                        {item.afterLabel}: {item.afterValue}
+                      </span>
                     </div>
                   </div>
                 </div>
-              </GlowCard>
-            ))}
-          </div>
+              </div>
+            </GlowCard>
+          ))}
         </div>
-
-        {/* Interactive Speed & Load Simulator */}
-        <Card className="lg:col-span-5 border-border bg-secondary/30 flex flex-col justify-between">
-          <CardHeader className="p-6 pb-3">
-            <div className="flex items-center justify-between gap-2">
-              <Badge variant="verified" className="font-mono">
-                <ZapIcon className="size-3 mr-1" />
-                Uji Kecepatan Server
-              </Badge>
-              <span className="font-mono text-xs text-muted-foreground tabular-nums">
-                {simulatedRps.toLocaleString("id-ID")} pengunjung
-              </span>
-            </div>
-            <CardTitle className="text-lg font-bold pt-2">
-              Simulasi Kecepatan Saat Ramai
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Geser jumlah pengunjung untuk melihat kecepatan buka website dibanding web biasa.
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="p-6 pt-2 flex flex-col gap-5">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between text-xs font-medium">
-                <span>Jumlah Pengunjung Bersamaan</span>
-                <span className="font-mono tabular-nums text-foreground">
-                  {simulatedRps.toLocaleString("id-ID")} user
-                </span>
-              </div>
-              <Slider
-                value={[simulatedRps]}
-                min={100}
-                max={5000}
-                step={100}
-                onValueChange={(vals) => setSimulatedRps(vals[0] ?? 1200)}
-                aria-label="Simulasi jumlah pengunjung"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-background p-3.5">
-              <div className="flex flex-col gap-1">
-                <span className="text-[11px] text-muted-foreground">
-                  Respon Web Surya
-                </span>
-                <span className="font-mono text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
-                  {simulatedLatencyMs} ms
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  Tetap ringan & cepat
-                </span>
-              </div>
-              <div className="flex flex-col gap-1 border-l border-border pl-3.5">
-                <span className="text-[11px] text-muted-foreground">
-                  Web Template Biasa
-                </span>
-                <span className="font-mono text-xl font-semibold text-muted-foreground tabular-nums">
-                  {simulatedLegacyLatencyMs} ms
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  Rawan lambat saat ramai
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </section>
 
       {/* Concise Narrative + Deliverables */}

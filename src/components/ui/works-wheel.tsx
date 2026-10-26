@@ -1,18 +1,14 @@
 "use client";
 
-// A portfolio index built as a wheel you turn.
-// At rest the work sits in a ring around a title, each card tangent to the
-// circle. The first notch of scroll blows the ring open into a vertical drum:
-// the card at the front lies flat and full size, the ones above and below
-// rotate away into hard perspective and run off the top and bottom of the
-// frame. Keep turning and the drum carries the next piece round to the front.
+// A technical showcase index built as a 3D scroll drum.
+// The active item sits flat and centered at the front, while adjacent items
+// rotate vertically along a perspective curve. Scrolling moves between items.
 import * as React from "react";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   AwardIcon,
   ExternalLinkIcon,
-  RotateCcwIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -48,7 +44,7 @@ export interface WorksWheelProps extends Omit<
   "children"
 > {
   items: WorksWheelItem[];
-  /** Sits in the middle of the ring. @default undefined */
+  /** Sits in the middle of the drum. @default undefined */
   label?: string;
   /** Label on the card's hover affordance. Omit to drop it. @default undefined */
   action?: string;
@@ -61,7 +57,6 @@ const CARD_RATIO = 1.45;
 const STEP = 40;
 const DRUM = 2.22;
 const LENS = 2.7;
-const RING_R = 1.14;
 const BOW = 1.82;
 const TITLE = 0.11;
 const INDEX = 0.036;
@@ -74,7 +69,6 @@ const EASE = 0.12;
 
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 type Stage = { w: number; h: number };
 
@@ -82,21 +76,6 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 
 const bowAt = (drumDeg: number, bow: number) =>
   -bow * (1 - Math.cos(rad(drumDeg)));
-
-function place(
-  ringDeg: number,
-  drumDeg: number,
-  ringR: number,
-  drumR: number,
-  bow: number,
-  m: number
-) {
-  return (
-    `translateX(${m * bowAt(drumDeg, bow)}px)` +
-    ` rotateZ(${(1 - m) * ringDeg}deg) translateY(${-(1 - m) * ringR}px)` +
-    ` rotateX(${m * drumDeg}deg) translateZ(${m * drumR}px)`
-  );
-}
 
 export function WorksWheel({
   items,
@@ -108,12 +87,10 @@ export function WorksWheel({
   const stageRef = React.useRef<HTMLDivElement>(null);
   const wheelRef = React.useRef<HTMLDivElement>(null);
   const cardRefs = React.useRef<(HTMLElement | null)[]>([]);
-  const titleRef = React.useRef<HTMLDivElement>(null);
 
   const turn = React.useRef(0);
   const target = React.useRef(0);
   const [active, setActive] = React.useState(0);
-  const [isDrumMode, setIsDrumMode] = React.useState(false);
   const [stage, setStage] = React.useState<Stage>({ w: 0, h: 0 });
 
   const count = items.length;
@@ -145,27 +122,21 @@ export function WorksWheel({
     const cardW = Math.min(h * CARD_H * CARD_RATIO, w * maxWFactor);
     const cardH = cardW / CARD_RATIO;
     const drumR = cardH * DRUM;
-    const ringR = cardH * RING_R;
-    const ringScale = count
-      ? clamp((((2 * Math.PI * ringR) / count) * 0.82) / (cardW || 1), 0.16, 1)
-      : 1;
     return {
       cardW,
       cardH,
-      ringR,
-      ringScale,
       drumR,
       bow: cardH * (isCompact ? 1.1 : BOW),
       depth: cardH * LENS,
       title: clamp(cardH * TITLE, 15, 26),
       index: clamp(cardH * INDEX, 10.5, 12.5),
     };
-  }, [stage, count]);
+  }, [stage]);
 
   React.useEffect(() => {
     if (!stage.h) return;
     let frame = 0;
-    const { ringR, ringScale, drumR, bow } = metrics;
+    const { drumR, bow } = metrics;
 
     const draw = () => {
       frame = requestAnimationFrame(draw);
@@ -173,12 +144,10 @@ export function WorksWheel({
       if (Math.abs(gap) < 0.0005) turn.current = target.current;
       else turn.current += gap * (reduced ? 1 : EASE);
 
-      const t = turn.current;
-      const m = clamp(t, 0, 1);
-      const pos = Math.max(0, t - 1);
+      const pos = turn.current;
 
       if (wheelRef.current) {
-        wheelRef.current.style.transform = `translateZ(${-m * drumR}px)`;
+        wheelRef.current.style.transform = `translateZ(${-drumR}px)`;
       }
 
       for (let i = 0; i < count; i++) {
@@ -186,26 +155,16 @@ export function WorksWheel({
         const drumDeg = d * STEP;
         const card = cardRefs.current[i];
         if (card) {
-          card.style.transform = place(
-            d * (360 / count),
-            drumDeg,
-            ringR,
-            drumR,
-            bow,
-            m
-          );
-          card.style.opacity = m > 0.5 && Math.abs(d) > CULL ? "0" : "1";
+          card.style.transform = `translateX(${bowAt(drumDeg, bow)}px) rotateX(${drumDeg}deg) translateZ(${drumR}px)`;
+          card.style.opacity = Math.abs(d) > CULL ? "0" : "1";
           card.style.zIndex = String(Math.round(100 - Math.abs(d) * 2));
         }
         const face = card?.firstElementChild as HTMLElement | null;
-        if (face) face.style.transform = `scale(${lerp(ringScale, 1, m)})`;
+        if (face) face.style.transform = "scale(1)";
       }
 
-      if (titleRef.current) titleRef.current.style.opacity = String(m);
       const near = clamp(Math.round(pos), 0, last);
       setActive((prev) => (prev === near ? prev : near));
-      const drumActive = m > 0.35;
-      setIsDrumMode((prev) => (prev === drumActive ? prev : drumActive));
     };
 
     frame = requestAnimationFrame(draw);
@@ -214,7 +173,7 @@ export function WorksWheel({
 
   const to = React.useCallback(
     (next: number) => {
-      target.current = clamp(next, 0, last + 1);
+      target.current = clamp(next, 0, last);
     },
     [last]
   );
@@ -225,7 +184,7 @@ export function WorksWheel({
     const onWheel = (event: WheelEvent) => {
       const next = target.current + event.deltaY / WHEEL_UNITS;
       const canScrollWheel =
-        (event.deltaY > 0 && target.current < last + 1) ||
+        (event.deltaY > 0 && target.current < last) ||
         (event.deltaY < 0 && target.current > 0);
       if (canScrollWheel) {
         event.preventDefault();
@@ -287,13 +246,13 @@ export function WorksWheel({
         }}
         onPointerUp={() => {
           drag.current = null;
-          if (target.current > 0.25) to(Math.round(target.current));
-          else to(0);
+          to(Math.round(target.current));
         }}
         onKeyDown={(event) => {
           if (event.key === "ArrowDown") to(Math.round(target.current) + 1);
           else if (event.key === "ArrowUp") to(Math.round(target.current) - 1);
           else if (event.key === "Home") to(0);
+          else if (event.key === "End") to(last);
           else return;
           event.preventDefault();
         }}
@@ -325,15 +284,15 @@ export function WorksWheel({
                     }
                     if (!item.href) {
                       e.preventDefault();
-                      if (turn.current < 0.5 || i !== active) {
-                        to(i + 1);
+                      if (i !== active) {
+                        to(i);
                       }
                       return;
                     }
-                    // When in Ring mode (turn < 0.5) or clicking an off-center card, spin it to the front of the drum first.
-                    if (turn.current < 0.5 || i !== active) {
+                    // When clicking an off-center card, rotate it to the front
+                    if (i !== active) {
                       e.preventDefault();
-                      to(i + 1);
+                      to(i);
                     }
                   }}
                   ref={(node: HTMLElement | null) => {
@@ -355,7 +314,7 @@ export function WorksWheel({
                         theme.borderAccent
                       )}
                     >
-                      {/* Subtle ambient glow matching the skill's signature color */}
+                      {/* Subtle ambient glow matching the skill signature color */}
                       <span
                         className={cn(
                           "pointer-events-none absolute -inset-4 bg-gradient-to-br opacity-35 transition-opacity duration-300 group-hover:opacity-65 blur-xl",
@@ -376,7 +335,7 @@ export function WorksWheel({
                         </span>
                       ) : null}
 
-                      {/* Center Large Tech Stack Icon (Matches suryapamungkas.vercel.app) */}
+                      {/* Center Large Tech Stack Icon */}
                       <span className="relative flex size-16 sm:size-20 items-center justify-center rounded-2xl bg-white/[0.04] border border-white/10 shadow-inner transition-transform duration-300 group-hover:scale-110">
                         <TechStackIcon
                           name={item.iconKey || item.title}
@@ -398,7 +357,7 @@ export function WorksWheel({
                       ) : null}
                     </span>
                   ) : item.variant === "certificate" ? (
-                    /* CERTIFICATE CREDENTIAL CARD (Matches suryapamungkas.vercel.app Certificate Card) */
+                    /* CERTIFICATE CREDENTIAL CARD */
                     <span className="relative flex size-full flex-col justify-between overflow-hidden rounded-2xl border border-white/12 bg-zinc-950/95 p-4 sm:p-5 text-left shadow-[0_20px_45px_-18px_rgba(0,0,0,0.75)] transition-all duration-300 group-hover:border-white/25">
                       <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-zinc-500/10 via-transparent to-zinc-800/20 opacity-60 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -477,11 +436,8 @@ export function WorksWheel({
         </div>
       </div>
 
-      {/* Front-card details readout on the left (visible when drum is open) */}
-      <div
-        ref={titleRef}
-        className="pointer-events-none absolute top-4 left-4 right-4 sm:top-1/2 sm:right-auto sm:left-[4.5%] sm:-translate-y-1/2 sm:max-w-[27%] flex flex-col gap-2 tracking-tight opacity-0"
-      >
+      {/* Front-card details readout on the left */}
+      <div className="pointer-events-none absolute top-4 left-4 right-4 sm:top-1/2 sm:right-auto sm:left-[4.5%] sm:-translate-y-1/2 sm:max-w-[27%] flex flex-col gap-2 tracking-tight opacity-100 transition-opacity">
         <div className="flex items-center gap-2">
           <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-surface border border-border shadow-2xs">
             {activeItem?.variant === "certificate" ? (
@@ -535,10 +491,10 @@ export function WorksWheel({
           <li key={`${item.title}-idx-${i}`} className="max-w-full">
             <button
               type="button"
-              onClick={() => to(i + 1)}
+              onClick={() => to(i)}
               className={cn(
                 "focus-visible:outline-foreground inline-flex items-center justify-end gap-1.5 cursor-pointer transition-colors outline-none focus-visible:outline-1 max-w-full",
-                isDrumMode && i === active
+                i === active
                   ? "text-status-emerald font-bold"
                   : "hover:text-foreground"
               )}
@@ -562,32 +518,19 @@ export function WorksWheel({
         <div className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-surface/90 backdrop-blur-md border border-border p-1 shadow-xs">
           <button
             type="button"
-            onClick={() => to(0)}
-            className={cn(
-              "inline-flex min-h-8 items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors cursor-pointer",
-              !isDrumMode
-                ? "bg-foreground text-background"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            <RotateCcwIcon className="size-3" />
-            <span>Mode Cincin</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => to(isDrumMode ? Math.max(1, active) : 1)}
+            onClick={() => to(Math.max(0, active - 1))}
+            disabled={active === 0}
             aria-label="Item sebelumnya"
-            className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-background transition-colors cursor-pointer"
+            className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-background disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
           >
             <ArrowUpIcon className="size-3.5" />
           </button>
           <button
             type="button"
-            onClick={() =>
-              to(isDrumMode ? Math.min(last + 1, active + 2) : 1)
-            }
+            onClick={() => to(Math.min(last, active + 1))}
+            disabled={active === last}
             aria-label="Item berikutnya"
-            className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-background transition-colors cursor-pointer"
+            className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-background disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
           >
             <ArrowDownIcon className="size-3.5" />
           </button>

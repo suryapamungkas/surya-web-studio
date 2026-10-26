@@ -20,7 +20,6 @@ import { ViewSwitcherBar } from "@/components/explorer/view-switcher-bar";
 import { ProjectCard } from "@/components/explorer/project-card";
 import { VerifiedMetricsRow } from "@/components/explorer/verified-metrics-row";
 import { InFeedCtaBanner } from "@/components/explorer/in-feed-cta-banner";
-import { StandoutStoryCard } from "@/components/explorer/standout-story-card";
 import { SuryaProfileSection } from "@/components/explorer/surya-profile-section";
 import {
   SegmentComparison,
@@ -145,7 +144,10 @@ export function ExplorerHubClient() {
   );
 
   const standoutStories = React.useMemo(
-    () => PORTFOLIO_PROJECTS.filter((p) => p.isStandout).slice(0, 4),
+    () =>
+      PORTFOLIO_PROJECTS.filter(
+        (p) => p.isStandout && p.slug !== "nusa-asset-management"
+      ).slice(0, 3),
     []
   );
 
@@ -262,11 +264,10 @@ export function ExplorerHubClient() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {featuredTopThree.map((project, idx) => (
+                    {featuredTopThree.map((project) => (
                       <ProjectCard
                         key={project.id}
                         project={project}
-                        priority={idx < 3}
                       />
                     ))}
                   </div>
@@ -280,7 +281,7 @@ export function ExplorerHubClient() {
                   {/* Row A: Web Apps, Travel, FinTech & EdTech */}
                   <section
                     aria-labelledby="row-web-heading"
-                    className="flex flex-col gap-5"
+                    className="flex flex-col gap-5 cv-auto-section"
                   >
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-border/70 pb-3.5">
                       <div>
@@ -315,7 +316,7 @@ export function ExplorerHubClient() {
                   {/* Row B: AI Systems & Legal Tech */}
                   <section
                     aria-labelledby="row-ai-heading"
-                    className="flex flex-col gap-5"
+                    className="flex flex-col gap-5 cv-auto-section"
                   >
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-border/70 pb-3.5">
                       <div>
@@ -350,7 +351,7 @@ export function ExplorerHubClient() {
                   {/* Row C: Business Systems, ESG & UMKM Export */}
                   <section
                     aria-labelledby="row-erp-heading"
-                    className="flex flex-col gap-5"
+                    className="flex flex-col gap-5 cv-auto-section"
                   >
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-border/70 pb-3.5">
                       <div>
@@ -451,11 +452,11 @@ export function ExplorerHubClient() {
               </section>
             )}
 
-            {/* SECTION 5: Standout Projects Comparison (2-Column Masonry) */}
+            {/* SECTION 5: Standout Projects */}
             {standoutStories.length > 0 && isDefaultShowcaseView && (
               <section
                 aria-labelledby="standout-stories-heading"
-                className="flex flex-col gap-6 pt-6 border-t border-border"
+                className="flex flex-col gap-6 pt-6 border-t border-border cv-auto-section"
               >
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
                   <div>
@@ -470,13 +471,13 @@ export function ExplorerHubClient() {
                     </h2>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground max-w-md">
-                    Klik &ldquo;Bangun Sistem Serupa&rdquo; jika Anda menginginkan fitur yang mirip untuk bisnis Anda.
+                    Klik &ldquo;Buka Web Asli&rdquo; atau &ldquo;Simulasi Fitur&rdquo; untuk menguji interaktivitas karya.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {standoutStories.map((project) => (
-                    <StandoutStoryCard key={project.id} project={project} />
+                    <ProjectCard key={project.id} project={project} />
                   ))}
                 </div>
               </section>

@@ -1,9 +1,24 @@
-import type {
-  ClientSegment,
-  ProjectCategory,
-  ProjectMetrics,
-  TechStackItem,
-} from "@/db/schema";
+export type ClientSegment = "INDIVIDUAL" | "SME" | "ENTERPRISE";
+
+export type ProjectCategory =
+  | "WEB_APP"
+  | "MOBILE_APP"
+  | "AI_SYSTEM"
+  | "INTERACTIVE_WEB"
+  | "ENTERPRISE_ERP"
+  | "PERSONAL_BRAND";
+
+export interface TechStackItem {
+  name: string;
+  icon: string;
+  role: string;
+}
+
+export interface ProjectMetrics {
+  lighthouseScore: number;
+  loadTimeMs: number;
+  impactMetric: string;
+}
 
 export interface ArchitectureLayer {
   layer: string;
@@ -675,7 +690,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     likesCount: 171,
     viewsCount: 1980,
     isFeatured: true,
-    isStandout: true,
+    isStandout: false,
     createdAt: "2026",
   },
   {
@@ -1256,7 +1271,7 @@ export const SERVICE_PACKAGES: ServicePackageTier[] = [
       "Halaman admin mudah untuk tambah produk & cek pesanan",
     ],
     technicalGuarantees: [
-      "Skor kecepatan Lighthouse 95+",
+      "Performa halaman cepat & responsif",
       "Bebas potongan komisi marketplace",
       "Pendampingan penuh sampai tim Anda bisa mengelola sendiri",
     ],
@@ -1303,7 +1318,7 @@ export const VERIFIED_ENGINEERING_PILLARS = [
     title: "Cepat Dibuka & Ramah Google",
     subtitle:
       "Dibangun dengan teknologi web terbaru (Next.js 16 & React 19) sehingga halaman terbuka dalam hitungan milidetik.",
-    badges: ["Skor 98+ Lighthouse", "Struktur SEO Rapi", "Keamanan SSL"],
+    badges: ["Performa Cepat", "Struktur SEO Rapi", "Keamanan SSL"],
   },
   {
     id: "pillar-ai",

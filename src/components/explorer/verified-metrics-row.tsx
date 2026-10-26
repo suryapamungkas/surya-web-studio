@@ -20,7 +20,7 @@ export function VerifiedMetricsRow() {
     <section
       id="arsitektur-kerja"
       aria-labelledby="verified-pillars-heading"
-      className="w-full scroll-mt-24"
+      className="w-full scroll-mt-24 cv-auto-section"
     >
       <div className="bg-surface rounded-3xl border border-border p-6 sm:p-8">
         <div className="flex flex-col gap-1.5 md:flex-row md:items-end md:justify-between pb-5 border-b border-border">
@@ -78,7 +78,7 @@ export function VerifiedMetricsRow() {
                   </div>
 
                   {/* Layer 2: Smooth Hover/Focus Detail Reveal */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-between bg-gradient-to-b from-background via-surface to-status-emerald-subtle/35 transition-all duration-500 ease-out opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+                  <div className="absolute inset-0 p-6 flex flex-col justify-between bg-gradient-to-b from-background/95 via-surface/95 to-status-emerald-subtle/35 transition-all duration-500 ease-out opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
                     <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed line-clamp-3">
                       {pillar.subtitle}
                     </p>
