@@ -428,7 +428,7 @@ export function CaseStudyDetailClient({
               </h2>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/">Lihat Semua 11 Karya</Link>
+              <Link href="/">Lihat Semua 10 Karya</Link>
             </Button>
           </div>
 

@@ -40,7 +40,7 @@ export function Footer() {
               Jasa pembuatan website personal, toko online UMKM, hingga aplikasi web perusahaan berbasis Next.js, React, dan AI.
             </p>
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <Badge variant="verified">11+ Proyek Live</Badge>
+              <Badge variant="verified">10+ Proyek Live</Badge>
               <Badge variant="secondary">17+ Sertifikasi AI & Web</Badge>
               <Badge variant="secondary">Surabaya & Remote Indonesia</Badge>
             </div>
@@ -73,10 +73,10 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/projects/nusa-asset-management"
+                    href="/projects/nusa-decarb"
                     className="text-muted-foreground hover:text-foreground inline-flex min-h-9 items-center gap-1.5 transition-colors"
                   >
-                    <span>Nusa Asset Management (EAM)</span>
+                    <span>NusaDecarb ESG & Carbon Platform</span>
                     <ArrowUpRightIcon className="size-3.5" />
                   </Link>
                 </li>

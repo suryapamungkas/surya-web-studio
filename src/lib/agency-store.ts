@@ -40,7 +40,7 @@ export const useAgencyStore = create<AgencyStoreState>((set) => ({
   activeDemoProject: null,
   setActiveDemoProject: (project) => set({ activeDemoProject: project }),
 
-  bookmarkedSlugs: ["baru-lagi", "nusa-asset-management"],
+  bookmarkedSlugs: ["baru-lagi", "traveloop"],
   toggleBookmark: (slug) =>
     set((state) => ({
       bookmarkedSlugs: state.bookmarkedSlugs.includes(slug)

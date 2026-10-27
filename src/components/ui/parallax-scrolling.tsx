@@ -17,7 +17,7 @@ export interface ParallaxComponentProps {
 
 export function ParallaxComponent({
   title = "Surya Studio",
-  subtitle = "11+ Karya Website Live • 16 Keahlian Teknis • 17 Sertifikasi Resmi",
+  subtitle = "10+ Karya Website Live • 16 Keahlian Teknis • 17 Sertifikasi Resmi",
   ctaLabel = "Lihat Karya Website",
   ctaHref = "#showcase",
   showOsmoEmblem = false,

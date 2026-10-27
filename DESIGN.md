@@ -5,8 +5,8 @@
 - **Visual Language:** Minimalist Editorial Gallery yang terinspirasi dari kurasi visual bergaya majalah teknologi modern (Contra-inspired), dipadukan dengan blueprint arsitektur vektor interaktif dan kalkulator estimasi proyek.
 - **Dials:** `Dial: ENERGY 3 / RHYTHM 3 / MOTION 2`
   - **ENERGY 3 (Bold):** Tipografi display yang tegas dan kontras tinggi antara kanvas putih bersih (`#FFFFFF`), permukaan alabaster (`#F7F7F8`), dan kartu kontras obsidian (`#111113`).
-  - **RHYTHM 3 (Varied):** Komposisi antar seksi bervariasi secara struktural: Hero parallax berlapis, profil builder dengan roda keahlian & sertifikasi, kurasi kartu blueprint proyek 3 kolom, baris metrik terverifikasi berbentuk spesifikasi teknis 3 pilar, banner konversi asimetris, galeri studi kasus mendalam 2 kolom dengan pembanding sebelum/sesudah, serta matriks perbandingan dua segmen.
-  - **MOTION 2 (Scroll-reveal & Transitions):** Transisi layout berbasis fisika (`layoutId` pada filter kategori dan tab segmen), spotlight radial border ringan saat kursor berada di atas kartu, dan inertial smooth scrolling (`lenis`) yang menghormati `prefers-reduced-motion`.
+  - **RHYTHM 3 (Varied):** Komposisi antar seksi bervariasi secara struktural: Hero koridor 3D perspektif (`ImageStreamHero`), profil builder dengan drum scroll 3D keahlian & sertifikasi, kurasi kartu blueprint proyek 3 kolom, baris metrik terverifikasi berbentuk spesifikasi teknis 3 pilar, banner konversi asimetris, serta matriks perbandingan dua segmen.
+  - **MOTION 2 (Scroll-reveal & Transitions):** Koridor 3D `ImageStreamHero` berbasis CSS `@keyframes` dan unit `cqw` yang otomatis membeku (`animation-play-state: paused`) saat `prefers-reduced-motion: reduce`, transisi layout berbasis fisika (`layoutId` pada filter kategori dan tab segmen), spotlight radial border ringan pada kartu proyek, dan inertial smooth scrolling (`lenis`).
 
 ## 2. Color System (WCAG AA Verified via `contrast-check.py`)
 Limit palet aktif: 2 warna dasar netral + 1 aksen utama (R-29).

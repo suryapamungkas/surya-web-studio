@@ -1,10 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { CheckCircle2Icon, ChevronRightIcon } from "lucide-react";
+import {
+  CheckCircle2Icon,
+  ChevronRightIcon,
+  SparklesIcon,
+  ZapIcon,
+  UserCheckIcon,
+} from "lucide-react";
 import { VERIFIED_ENGINEERING_PILLARS } from "@/lib/portfolio-data";
 import { useAgencyStore } from "@/lib/agency-store";
-import { Badge } from "@/components/ui/badge";
 import { GlowCard, type GlowCardProps } from "@/components/ui/spotlight-card";
 
 const PILLAR_GLOW_COLORS: NonNullable<GlowCardProps["glowColor"]>[] = [
@@ -12,6 +17,9 @@ const PILLAR_GLOW_COLORS: NonNullable<GlowCardProps["glowColor"]>[] = [
   "blue",
   "purple",
 ];
+
+const PILLAR_ICONS = [SparklesIcon, ZapIcon, UserCheckIcon];
+const PILLAR_TAGS = ["UX & Tampilan", "Performa & SEO", "Komunikasi Langsung"];
 
 export function VerifiedMetricsRow() {
   const openContactModal = useAgencyStore((state) => state.openContactModal);
@@ -36,66 +44,70 @@ export function VerifiedMetricsRow() {
             </h2>
           </div>
           <p className="text-muted-foreground max-w-sm text-xs leading-relaxed">
-            Arahkan kursor pada kartu untuk melihat efek spotlight interaktif,
-            detail standar pengerjaan, dan jaminan layanan.
+            Standar teknis terukur, jaminan performa produksi, dan alur pengerjaan langsung tanpa perantara agensi.
           </p>
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3">
-          {VERIFIED_ENGINEERING_PILLARS.map((pillar, index) => (
-            <GlowCard
-              key={pillar.id}
-              customSize
-              glowColor={PILLAR_GLOW_COLORS[index % PILLAR_GLOW_COLORS.length]}
-              tabIndex={0}
-              className="group h-[245px] bg-background transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-status-emerald"
-            >
-              <div className="relative z-10 flex h-full w-full flex-col justify-between overflow-hidden rounded-[14px]">
-                {/* Top Header: Clean Pillar Number + Title */}
-                <div className="p-6 pb-4 flex flex-col gap-1.5">
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-status-emerald">
-                    Pilar 0{index + 1}
-                  </span>
-                  <h3 className="font-display text-lg font-bold tracking-tight text-foreground group-hover:text-status-emerald group-focus-within:text-status-emerald transition-colors">
-                    {pillar.title}
-                  </h3>
-                </div>
+        <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3 items-stretch">
+          {VERIFIED_ENGINEERING_PILLARS.map((pillar, index) => {
+            const Icon = PILLAR_ICONS[index % PILLAR_ICONS.length];
+            const tag = PILLAR_TAGS[index % PILLAR_TAGS.length];
+            const glowColor =
+              PILLAR_GLOW_COLORS[index % PILLAR_GLOW_COLORS.length];
 
-                {/* Bottom Interactive Stage */}
-                <div className="relative flex-1 w-full overflow-hidden bg-surface/65 border-t border-border/60">
-                  {/* Layer 1: Idle Clean Summary */}
-                  <div className="absolute inset-0 p-6 flex items-center justify-between transition-all duration-500 ease-out group-hover:opacity-0 group-hover:scale-105 group-focus-within:opacity-0 group-focus-within:scale-105 pointer-events-none">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <CheckCircle2Icon className="text-status-emerald size-5 shrink-0" />
-                      <span className="text-xs font-semibold text-foreground">
-                        {pillar.badges[0]}
-                      </span>
+            return (
+              <GlowCard
+                key={pillar.id}
+                customSize
+                glowColor={glowColor}
+                tabIndex={0}
+                className="group relative flex flex-col justify-between rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-status-emerald"
+              >
+                <div className="relative z-10 flex h-full flex-col justify-between gap-5">
+                  {/* Top: Header, Title and Full Description */}
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold uppercase tracking-wider text-status-emerald">
+                          Pilar 0{index + 1}
+                        </span>
+                        <span className="size-1 rounded-full bg-border" />
+                        <span className="text-[11px] font-medium text-muted-foreground">
+                          {tag}
+                        </span>
+                      </div>
+                      <div className="flex size-8 items-center justify-center rounded-lg border border-border/80 bg-surface text-status-emerald transition-colors group-hover:border-status-emerald/40 group-hover:bg-status-emerald/10">
+                        <Icon className="size-4 shrink-0" />
+                      </div>
                     </div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-status-emerald inline-flex items-center gap-1">
-                      <span>Detail</span>
-                      <ChevronRightIcon className="size-4" />
-                    </span>
-                  </div>
 
-                  {/* Layer 2: Smooth Hover/Focus Detail Reveal */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-between bg-gradient-to-b from-background/95 via-surface/95 to-status-emerald-subtle/35 transition-all duration-500 ease-out opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
-                    <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed line-clamp-3">
+                    <h3 className="font-display text-lg font-bold tracking-tight text-foreground transition-colors group-hover:text-status-emerald">
+                      {pillar.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                       {pillar.subtitle}
                     </p>
+                  </div>
 
-                    <div className="flex items-center justify-between border-t border-border/80 pt-3 gap-2">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {pillar.badges.map((badgeText) => (
-                          <Badge
-                            key={badgeText}
-                            variant="verified"
-                            className="text-[10px]"
-                          >
-                            {badgeText}
-                          </Badge>
-                        ))}
-                      </div>
+                  {/* Bottom: Verified Deliverable Badges and Direct Action */}
+                  <div className="flex flex-col gap-4 border-t border-border/60 pt-4">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {pillar.badges.map((badgeText) => (
+                        <span
+                          key={badgeText}
+                          className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-surface/90 px-2 py-1 text-[11px] font-medium text-foreground transition-colors group-hover:border-status-emerald/30"
+                        >
+                          <CheckCircle2Icon className="size-3 text-status-emerald shrink-0" />
+                          <span>{badgeText}</span>
+                        </span>
+                      ))}
+                    </div>
 
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-[11px] font-medium text-muted-foreground">
+                        Konsultasi spesifikasi
+                      </span>
                       <button
                         type="button"
                         onClick={() =>
@@ -105,17 +117,17 @@ export function VerifiedMetricsRow() {
                             defaultMessage: `Halo Surya, saya ingin menanyakan lebih lanjut mengenai standar pengerjaan "${pillar.title}" untuk kebutuhan website saya.`,
                           })
                         }
-                        className="inline-flex min-h-9 items-center gap-0.5 text-[11px] font-bold uppercase tracking-wider text-status-emerald hover:opacity-85 shrink-0 cursor-pointer"
+                        className="inline-flex min-h-8 items-center gap-1 text-xs font-semibold text-status-emerald hover:opacity-80 transition-all cursor-pointer group-hover:translate-x-0.5"
                       >
-                        <span>Tanya</span>
-                        <ChevronRightIcon className="size-3.5 transform group-hover:translate-x-1 transition-transform" />
+                        <span>Tanya Detail</span>
+                        <ChevronRightIcon className="size-3.5 transition-transform group-hover:translate-x-1" />
                       </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            </GlowCard>
-          ))}
+              </GlowCard>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ import {
   CATEGORY_FILTERS,
 } from "@/lib/portfolio-data";
 import { useAgencyStore } from "@/lib/agency-store";
-import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
+import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 import { ViewSwitcherBar } from "@/components/explorer/view-switcher-bar";
 import { ProjectCard } from "@/components/explorer/project-card";
 import { VerifiedMetricsRow } from "@/components/explorer/verified-metrics-row";
@@ -107,7 +107,7 @@ export function ExplorerHubClient() {
     });
   }, [activeCategory, searchQuery, showSavedOnly, bookmarkedSlugs]);
 
-  // Curated rows featuring all 11 real projects by Surya Pamungkas
+  // Curated rows featuring all real projects by Surya Pamungkas
   const featuredTopThree = React.useMemo(
     () => PORTFOLIO_PROJECTS.filter((p) => p.isFeatured).slice(0, 3),
     []
@@ -116,7 +116,7 @@ export function ExplorerHubClient() {
   const rowWebAndStore = React.useMemo(
     () =>
       PORTFOLIO_PROJECTS.filter((p) =>
-        ["traveloop", "resilio-id", "vanguard-human-capital"].includes(p.slug)
+        ["baru-lagi", "traveloop", "vanguard-human-capital"].includes(p.slug)
       ),
     []
   );
@@ -136,18 +136,13 @@ export function ExplorerHubClient() {
   const rowEnterpriseAndUmkm = React.useMemo(
     () =>
       PORTFOLIO_PROJECTS.filter((p) =>
-        ["nusa-asset-management", "nusa-decarb", "trustchain-umkm"].includes(
-          p.slug
-        )
+        ["resilio-id", "nusa-decarb", "trustchain-umkm"].includes(p.slug)
       ),
     []
   );
 
   const standoutStories = React.useMemo(
-    () =>
-      PORTFOLIO_PROJECTS.filter(
-        (p) => p.isStandout && p.slug !== "nusa-asset-management"
-      ).slice(0, 3),
+    () => PORTFOLIO_PROJECTS.filter((p) => p.isStandout).slice(0, 3),
     []
   );
 
@@ -159,13 +154,27 @@ export function ExplorerHubClient() {
 
   return (
     <div className="min-h-screen">
-      {/* Section 0: Multi-Layer GSAP ScrollTrigger Parallax Hero */}
-      <ParallaxComponent
-        title="Surya Studio"
-        subtitle="11+ Karya Website Live • 16 Keahlian Teknis • 17 Sertifikasi Resmi"
-        ctaLabel="Lihat Karya Website"
-        ctaHref="#showcase"
-      />
+      {/* Section 0: 3D Perspective Image Stream Hero */}
+      <section
+        aria-label="Showcase Hero Surya Studio"
+        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 pb-6"
+      >
+        <ImageStreamHero className="h-[420px] sm:h-[500px] lg:h-[560px] w-full rounded-2xl border border-border bg-background">
+          <div className="relative z-10 flex h-full flex-col items-center justify-between py-8 sm:py-10 lg:py-12 text-center">
+            <div className="px-6">
+              <h1 className="font-display text-balance text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
+                Karya nyata,
+                <br />
+                di garis depan.
+              </h1>
+            </div>
+            <p className="max-w-md text-balance px-6 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              10+ website produksi aktif, 16 keahlian teknis, dan 17 sertifikasi
+              resmi yang siap disesuaikan untuk bisnis Anda.
+            </p>
+          </div>
+        </ImageStreamHero>
+      </section>
 
       {/* Sticky View Switcher, Category Pills, and Live Search Bar */}
       <ViewSwitcherBar
@@ -286,13 +295,13 @@ export function ExplorerHubClient() {
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-border/70 pb-3.5">
                       <div>
                         <span className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                          02 / Aplikasi Web Interaktif & Edukasi
+                          02 / Aplikasi Web & Toko Digital
                         </span>
                         <h2
                           id="row-web-heading"
                           className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground"
                         >
-                          Platform Travel, Finansial & Kursus Online
+                          Toko Online, Rencana Wisata & Portofolio
                         </h2>
                       </div>
                       <Button
@@ -362,7 +371,7 @@ export function ExplorerHubClient() {
                           id="row-erp-heading"
                           className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground"
                         >
-                          Manajemen Aset, ESG Karbon & Ekspor UMKM
+                          Ketahanan Finansial, ESG Karbon & Ekspor UMKM
                         </h2>
                       </div>
                       <Button
@@ -414,7 +423,7 @@ export function ExplorerHubClient() {
                     onClick={handleResetFilters}
                   >
                     <RotateCcwIcon data-icon="inline-start" />
-                    Tampilkan Semua (11 Proyek)
+                    Tampilkan Semua ({PORTFOLIO_PROJECTS.length} Proyek)
                   </Button>
                 </div>
 
@@ -434,7 +443,7 @@ export function ExplorerHubClient() {
                         Proyek tidak ditemukan untuk filter ini
                       </EmptyTitle>
                       <EmptyDescription>
-                        Reset filter untuk melihat seluruh 11 karya website siap pakai.
+                        Reset filter untuk melihat seluruh {PORTFOLIO_PROJECTS.length} karya website siap pakai.
                       </EmptyDescription>
                     </EmptyHeader>
                     <EmptyContent className="flex-row flex-wrap justify-center gap-3">

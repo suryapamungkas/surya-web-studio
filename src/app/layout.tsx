@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Surya Pamungkas | Jasa Pembuatan Website, Toko Online & Aplikasi AI",
     description:
-      "Lihat 11+ karya website live, cek paket pembuatan web mulai Rp 1,5 Jt, dan konsultasi langsung dengan Surya Pamungkas.",
+      "Lihat 10+ karya website live, cek paket pembuatan web mulai Rp 1,5 Jt, dan konsultasi langsung dengan Surya Pamungkas.",
     type: "website",
     locale: "id_ID",
   },

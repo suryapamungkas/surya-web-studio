@@ -44,7 +44,7 @@ export function Navbar() {
       {
         label: "Karya Website",
         href: "/#showcase",
-        meta: "01 / 11+ Proyek Live",
+        meta: "01 / 10+ Proyek Live",
         shapeIndex: "1",
       },
       {

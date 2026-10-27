@@ -132,8 +132,8 @@ export const SURYA_SKILLS: SuryaSkillItem[] = [
     category: "Cloud & Backend",
     summary: "Arsitektur REST API, autentikasi aman, dan manajemen server stabil.",
     iconKey: "backend",
-    image: "/images/surya/nusa-asset-management.png",
-    href: "/projects/nusa-asset-management",
+    image: "/images/surya/nusa-decarb.png",
+    href: "/projects/nusa-decarb",
   },
   {
     name: "Web Development",
@@ -244,8 +244,8 @@ export const SURYA_SKILLS: SuryaSkillItem[] = [
     category: "Cloud & Backend",
     summary: "Database relasional terstruktur untuk transaksi, produk, dan inventori.",
     iconKey: "postgres",
-    image: "/images/surya/nusa-asset-management.png",
-    href: "/projects/nusa-asset-management",
+    image: "/images/surya/nusa-decarb.png",
+    href: "/projects/nusa-decarb",
   },
 ];
 
@@ -379,7 +379,7 @@ export const SURYA_CERTIFICATES: SuryaCertificateItem[] = [
     date: "Jun 2026",
     credentialId: "GRX5WM03YZ0M",
     credentialUrl: "https://www.dicoding.com/certificates/GRX5WM03YZ0M",
-    image: "/images/surya/nusa-asset-management.png",
+    image: "/images/surya/nusa-decarb.png",
     iconKey: "googlecloud",
   },
   {
@@ -454,10 +454,10 @@ export const CATEGORY_FILTERS: {
   },
   {
     id: "enterprise-erp",
-    label: "Sistem Bisnis & Aset",
+    label: "Sistem Bisnis & Rantai Pasok",
     shortLabel: "Sistem Bisnis",
     dbCategory: "ENTERPRISE_ERP",
-    description: "Dashboard manajemen aset cabang, audit emisi karbon, dan rantai pasok.",
+    description: "Dashboard audit emisi karbon, sistem rantai pasok, dan tata kelola bisnis.",
   },
   {
     id: "ai-systems",
@@ -626,74 +626,6 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     createdAt: "2026",
   },
   {
-    id: "surya-03",
-    slug: "nusa-asset-management",
-    title: "Nusa Asset Management (EAM)",
-    clientTypeLabel: "Sistem Manajemen Aset & QR Code Perusahaan",
-    shortDescription:
-      "Aplikasi web pelacakan aset fisik multi-cabang dengan pembuatan label QR Code instan, hitung penyusutan PSAK 16, dan alur mutasi.",
-    problemStatement:
-      "Perusahaan multi-cabang sering kehilangan jejak inventori kantor dan salah menghitung nilai buku penyusutan jika masih memakai Excel manual.",
-    architectureExecution:
-      "Menyatukan data aset Jakarta, Surabaya, Medan, dan Makassar dalam satu dashboard dengan generator QR Code SVG dan kalkulasi PSAK 16 otomatis.",
-    engineeringStory: `### Solusi Rapi untuk Operasional Perusahaan
-1. **Cetak Label QR Instan:** Setiap aset baru langsung memiliki kode QR siap cetak untuk ditempel dan dipindai petugas.
-2. **Hitung Penyusutan Otomatis:** Sistem menghitung nilai buku aset sesuai standar akuntansi PSAK 16 tanpa rumus manual.
-3. **Alur Pindah Cabang Jelas:** Dilengkapi persetujuan berjenjang saat aset dipindahkan antar-kantor.`,
-    category: "ENTERPRISE_ERP",
-    targetSegment: "ENTERPRISE",
-    coverImageUrl: "/images/surya/nusa-asset-management.png",
-    previewVideoUrl: "/videos/surya/nusa-asset-management.mp4",
-    liveDemoUrl: "/projects/nusa-asset-management?demo=interactive",
-    externalLiveUrl: "https://nusa-asset-management.vercel.app",
-    githubUrl: "https://github.com/suryapamungkas/nusa-asset-management",
-    techStack: [
-      { name: "Next.js 16", icon: "nextjs", role: "Enterprise Dashboard" },
-      { name: "React 19", icon: "nextjs", role: "QR & Audit Views" },
-      { name: "TypeScript", icon: "typescript", role: "PSAK 16 Calculation" },
-      { name: "Tailwind CSS", icon: "tailwind", role: "Clean Data Tables" },
-    ],
-    metrics: {
-      lighthouseScore: 99,
-      loadTimeMs: 340,
-      impactMetric: "Audit aset 4 cabang selesai real-time dengan QR",
-    },
-    architectureLayers: [
-      {
-        layer: "Mesin Akuntansi",
-        choice: "PSAK 16 Straight-Line Depreciation Engine",
-        rationale: "Menghitung penyusutan bulanan dan nilai sisa aset secara presisi.",
-      },
-      {
-        layer: "Pelacakan Fisik",
-        choice: "Instant SVG QR & Barcode Generator",
-        rationale: "Membuat label fisik aset langsung dari browser tanpa software tambahan.",
-      },
-    ],
-    beforeAfter: [
-      {
-        metricLabel: "Pencarian & Audit Aset Cabang",
-        beforeLabel: "File Excel Terpisah",
-        beforeValue: "2-3 Hari",
-        afterLabel: "Scan QR & Filter Pusat",
-        afterValue: "Detik Itu Juga",
-        improvementNote: "Lokasi dan penanggung jawab aset langsung terlihat.",
-      },
-    ],
-    deliverables: [
-      "Dashboard Inventori Aset Multi-Cabang",
-      "Generator Label QR Code & Barcode Siap Cetak",
-      "Kalkulator Penyusutan Nilai Buku (PSAK 16)",
-      "Modul Persetujuan Mutasi & Transfer Aset",
-    ],
-    timelineWeeks: "3-5 Minggu",
-    likesCount: 171,
-    viewsCount: 1980,
-    isFeatured: true,
-    isStandout: false,
-    createdAt: "2026",
-  },
-  {
     id: "surya-04",
     slug: "traveloop",
     title: "Traveloop Smart Itinerary & Map",
@@ -756,7 +688,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     timelineWeeks: "2-4 Minggu",
     likesCount: 165,
     viewsCount: 1840,
-    isFeatured: false,
+    isFeatured: true,
     isStandout: true,
     createdAt: "2026",
   },
@@ -1080,7 +1012,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     engineeringStory: `### Manfaat bagi Bisnis Ekspor & Logistik
 1. **Kepercayaan Pembeli Global:** Mitra luar negeri dapat memantau riwayat perjalanan dan keaslian barang secara transparan.
 2. **Cek Dokumen Cepat:** Meminimalkan risiko kesalahan administrasi pengiriman lintas negara.`,
-    category: "PERSONAL_BRAND",
+    category: "ENTERPRISE_ERP",
     targetSegment: "SME",
     coverImageUrl: "/images/surya/trustchain.png",
     liveDemoUrl: "/projects/trustchain-umkm?demo=interactive",
@@ -1286,13 +1218,13 @@ export const SERVICE_PACKAGES: ServicePackageTier[] = [
     timeline: "3-6 Minggu",
     priceRangeIDR: "Rp 15 Jt - Rp 45 Jt+",
     summary:
-      "Aplikasi web kustom sesuai alur kerja perusahaan: manajemen aset QR, portal dokumen, atau fitur asisten AI pintar.",
+      "Aplikasi web kustom sesuai alur kerja perusahaan: sistem rantai pasok, audit emisi ESG, portal dokumen, atau fitur asisten AI pintar.",
     idealFor:
       "Perusahaan Multi-Cabang, Lembaga Hukum, EdTech, Logistik, dan Startup.",
     includedModules: [
       "Pengembangan Full-Stack (Next.js 16, React 19, TypeScript, Python)",
       "Fitur AI kustom (Pencarian dokumen pintar, ringkasan, atau deteksi)",
-      "Manajemen pengguna multi-cabang & cetak QR/Laporan PDF",
+      "Manajemen pengguna & hak akses berjenjang, cetak QR/Laporan PDF",
       "Kode sumber penuh (Full Source Code) menjadi hak milik Anda",
     ],
     technicalGuarantees: [
