@@ -141,53 +141,47 @@ export function ProjectCard({ project }: ProjectCardProps) {
             )}
           >
             <div className="space-y-2">
-              <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-status-emerald bg-status-emerald-subtle px-2 py-0.5 rounded inline-block">
-                  Ringkasan Eksekutif
-                </span>
-                <span className="font-mono text-[11px] text-muted-foreground">
                   {SEGMENT_LABEL[project.targetSegment]}
+                </span>
+                <span className="inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
+                  <ClockIcon className="size-3 text-status-emerald" />
+                  {project.timelineWeeks}
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-normal line-clamp-3">
+              <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-normal line-clamp-2">
                 {project.shortDescription}
               </p>
             </div>
 
             {/* Bottom Action Footer */}
             <div className="pt-2.5 flex items-center justify-between border-t border-border/80 mt-auto text-xs gap-2">
-              <div className="flex items-center gap-3">
-                {project.externalLiveUrl ? (
-                  <a
-                    href={project.externalLiveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex min-h-8 items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <ExternalLinkIcon className="size-3.5 text-status-emerald" />
-                    <span>Buka Web Asli</span>
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveDemoProject(project);
-                    }}
-                    className="inline-flex min-h-8 items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                  >
-                    <PlayIcon className="size-3.5 text-status-emerald" />
-                    <span>Simulasi Fitur</span>
-                  </button>
-                )}
-
-                <span className="hidden sm:inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
-                  <ClockIcon className="size-3" />
-                  {project.timelineWeeks}
-                </span>
-              </div>
+              {project.externalLiveUrl ? (
+                <a
+                  href={project.externalLiveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex min-h-8 items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ExternalLinkIcon className="size-3.5 text-status-emerald" />
+                  <span>Buka Web Asli</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveDemoProject(project);
+                  }}
+                  className="inline-flex min-h-8 items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                >
+                  <PlayIcon className="size-3.5 text-status-emerald" />
+                  <span>Simulasi</span>
+                </button>
+              )}
 
               <Link
                 href={`/projects/${project.slug}`}

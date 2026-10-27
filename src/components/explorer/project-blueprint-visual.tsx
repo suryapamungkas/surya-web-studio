@@ -71,86 +71,66 @@ export function ProjectBlueprintVisual({
     return (
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-2xl border border-border bg-surface p-6 sm:p-8 flex flex-col justify-between gap-6",
+          "relative w-full overflow-hidden rounded-2xl border border-border bg-surface p-5 sm:p-6 flex flex-col justify-between gap-5",
           className
         )}
       >
-        {/* Top bar: Clean System Header */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-4">
-          <span className="font-mono text-xs text-muted-foreground">
-            Arsitektur Sistem Terverifikasi
+        {/* Top bar: Clean System Header + Key Comparison */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 pb-3.5">
+          <span className="font-mono text-xs font-medium text-muted-foreground">
+            Arsitektur & Stack Teknologi
           </span>
 
-          <div className="flex items-center gap-2.5 font-mono text-xs">
-            <span className="rounded-md border border-border bg-background px-2.5 py-1 font-semibold text-foreground">
-              Estimasi: {project.timelineWeeks}
-            </span>
-          </div>
+          {primaryComparison && (
+            <div className="flex items-center gap-2 font-mono text-xs">
+              <span className="text-muted-foreground hidden sm:inline">
+                {primaryComparison.metricLabel}:
+              </span>
+              <span className="text-muted-foreground line-through tabular-nums">
+                {primaryComparison.beforeValue}
+              </span>
+              <ArrowRightIcon className="size-3 text-status-emerald" />
+              <span className="rounded-md bg-status-emerald-subtle px-2 py-0.5 font-bold text-status-emerald tabular-nums">
+                {primaryComparison.afterValue}
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* Middle: 3-Layer Architecture Flow Diagram */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Middle: Minimalist 3-Layer Architecture Tiles */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
           {project.architectureLayers.map((layer, index) => (
             <div
               key={layer.layer}
-              className="relative rounded-xl border border-border bg-background p-4 flex flex-col justify-between gap-3"
+              className="relative rounded-xl border border-border bg-background p-4 flex flex-col justify-between gap-2"
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   0{index + 1} / {layer.layer}
                 </span>
-                <LayersIcon className={cn("size-4", theme.accentClass)} />
+                <LayersIcon className={cn("size-4 shrink-0", theme.accentClass)} />
               </div>
 
-              <div>
-                <p className="font-display text-sm sm:text-base font-bold text-foreground">
-                  {layer.choice}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                  {layer.rationale}
-                </p>
-              </div>
+              <p className="font-display text-sm sm:text-base font-bold text-foreground leading-snug">
+                {layer.choice}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Bottom: Tech Stack Pipeline + Key Metric Comparison */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/80 bg-background/80 p-4">
-          <div className="flex flex-wrap items-center gap-2">
-            {project.techStack.map((tech, idx) => (
-              <React.Fragment key={tech.name}>
-                <div className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-medium text-foreground">
-                  <TechStackIcon name={tech.icon} className="size-4" />
-                  <span>{tech.name}</span>
-                  <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
-                    ({tech.role})
-                  </span>
-                </div>
-                {idx < project.techStack.length - 1 && (
-                  <ArrowRightIcon className="size-3.5 text-muted-foreground/60 hidden sm:block" />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-
-          {primaryComparison && (
-            <div className="flex items-center gap-2.5 border-t sm:border-t-0 sm:border-l border-border pt-3 sm:pt-0 sm:pl-4 shrink-0">
-              <div className="flex flex-col text-right font-mono">
-                <span className="text-[10px] uppercase text-muted-foreground">
-                  {primaryComparison.metricLabel}
-                </span>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-xs text-muted-foreground line-through tabular-nums">
-                    {primaryComparison.beforeValue}
-                  </span>
-                  <ArrowRightIcon className="size-3 text-status-emerald" />
-                  <span className="text-sm font-bold text-status-emerald tabular-nums">
-                    {primaryComparison.afterValue}
-                  </span>
-                </div>
+        {/* Bottom: Clean Tech Stack Pills */}
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          {project.techStack.map((tech, idx) => (
+            <React.Fragment key={tech.name}>
+              <div className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground">
+                <TechStackIcon name={tech.icon} className="size-4" />
+                <span>{tech.name}</span>
               </div>
-            </div>
-          )}
+              {idx < project.techStack.length - 1 && (
+                <ArrowRightIcon className="size-3 text-muted-foreground/50 hidden sm:block" />
+              )}
+            </React.Fragment>
+          ))}
         </div>
       </div>
     );
@@ -160,7 +140,7 @@ export function ProjectBlueprintVisual({
   return (
     <div
       className={cn(
-        "relative w-full h-full flex items-center justify-center p-5 overflow-hidden bg-surface/40 select-none",
+        "relative w-full h-full flex items-center justify-center p-4 overflow-hidden bg-surface/40 select-none",
         className
       )}
     >
@@ -173,17 +153,17 @@ export function ProjectBlueprintVisual({
       />
 
       {/* Centered Tech Stack Tiles */}
-      <div className="relative z-10 flex items-center justify-center gap-3">
+      <div className="relative z-10 flex items-center justify-center gap-2.5">
         {visibleStack.map((tech, idx) => (
           <React.Fragment key={tech.name}>
-            <div className="flex flex-col items-center gap-1.5 rounded-xl border border-border/90 bg-background/90 px-3.5 py-3 shadow-2xs min-w-[78px]">
+            <div className="flex flex-col items-center gap-1.5 rounded-xl border border-border/90 bg-background/90 px-3 py-2.5 shadow-2xs min-w-[74px]">
               <TechStackIcon name={tech.icon} className="size-5" />
-              <span className="font-display text-[11px] font-semibold text-foreground text-center truncate max-w-[76px]">
+              <span className="font-display text-[11px] font-semibold text-foreground text-center whitespace-nowrap">
                 {tech.name}
               </span>
             </div>
             {idx < visibleStack.length - 1 && (
-              <div className="h-px w-3 bg-border shrink-0" />
+              <div className="h-px w-2.5 bg-border shrink-0" />
             )}
           </React.Fragment>
         ))}
