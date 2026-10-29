@@ -19,8 +19,8 @@ import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 import { ViewSwitcherBar } from "@/components/explorer/view-switcher-bar";
 import { ProjectCard } from "@/components/explorer/project-card";
 import { VerifiedMetricsRow } from "@/components/explorer/verified-metrics-row";
+import { ThreeDTestimonialsSection } from "@/components/explorer/three-d-testimonials-section";
 import { InFeedCtaBanner } from "@/components/explorer/in-feed-cta-banner";
-import { SuryaProfileSection } from "@/components/explorer/surya-profile-section";
 import {
   SegmentComparison,
   AgencyPricingSection,
@@ -282,10 +282,7 @@ export function ExplorerHubClient() {
                   </div>
                 </section>
 
-                {/* SECTION 2: Surya Pamungkas Builder Profile, 10 Skills & 14 Certifications */}
-                <SuryaProfileSection />
-
-                {/* SECTION 3: Categorized Real Projects Rows */}
+                {/* Categorized Real Projects Rows */}
                 <div className="flex flex-col gap-14">
                   {/* Row A: Web Apps, Travel, FinTech & EdTech */}
                   <section
@@ -393,9 +390,10 @@ export function ExplorerHubClient() {
                   </section>
                 </div>
 
-                {/* SECTION 4: Interactive Pricing, Why Work With Surya & CTA Banner */}
+                {/* SECTION 4: Interactive Pricing, Quality Pillars, 3D Testimonials & CTA Banner */}
                 <AgencyPricingSection />
                 <VerifiedMetricsRow />
+                <ThreeDTestimonialsSection />
                 <InFeedCtaBanner />
               </>
             ) : (
@@ -502,7 +500,6 @@ export function ExplorerHubClient() {
             className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-14"
           >
             <SegmentComparison />
-            <SuryaProfileSection />
           </motion.div>
         )}
       </AnimatePresence>
